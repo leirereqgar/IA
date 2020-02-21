@@ -1,0 +1,7 @@
+name:HALfonso
+email:anonymous@correo.ugr.es
+gender:robot
+botmaster:leirereqgar
+organization:ugr
+version:0.0.4
+age:25
