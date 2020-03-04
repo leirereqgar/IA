@@ -21,11 +21,17 @@
 
 <!-- Cuarta regla -->
 <category>
-	<pattern>Como te llamas</pattern>
-	<template>Mi nombre es HALfonso</template>
+	<pattern>^ y tu</pattern>
+	<template><srai>^ QUE TAL TU</srai></template>
 </category>
 
 <!-- Quinta regla -->
+<category>
+	<pattern>Como [se te] llama+</pattern>
+	<template>Mi nombre es HALfonso</template>
+</category>
+
+<!-- Sexta regla -->
 <category>
 	<pattern>^ me llamo *</pattern>
 	<template>
@@ -34,15 +40,18 @@
 	</template>
 </category>
 
-<!-- Sexta regla -->
+<!-- Septima regla -->
 <category>
 	<pattern>Cual es mi nombre</pattern>
 	<template>
-		Tu nombre es <get name="nombre"/>
+		<condition name="nombre">
+			<li value="unknown">No soy adivino, aún no sé tu nombre</li>
+			<li>Tu nombre es <get name="nombre"/></li>
+		</condition>
 	</template>
 </category>
 
-<!-- Septima regla -->
+<!-- Octava regla -->
 <category>
 	<pattern>Mi color favorito es el ^</pattern>
 	<template>
@@ -51,13 +60,13 @@
 	</template>
 </category>
 
-<!-- Octava regla -->
+<!-- Novena regla -->
 <category>
 	<pattern>* mi nombre</pattern>
 	<template><srai>CUAL ES MI NOMBRE</srai></template>
-</cattegory>
+</category>
 
-<!-- Novena regla -->
+<!-- Décima regla -->
 <category>
 	<pattern>^ como me llamo</pattern>
 	<template><srai>CUAL ES MI NOMBRE</srai></template>
