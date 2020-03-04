@@ -82,9 +82,9 @@
 	<!-- Primera pregunta, hablame de ti-->
 	<!-- sobre| de | un poco de -->
 	<category>
-		<pattern><set>sinonimos_hablar</set> [SOBRE DE UN] ^ TI</pattern>
+		<pattern><set>sinonimos_hablar</set> [SOBRE DE UN ALGO] ^ TI</pattern>
 		<template>
-			Soy HAL... quiero decir <bot name="botmaster"/> una estudiante de informática
+			Soy HAL... quiero decir <bot name="botmaster"/>, una estudiante de informática de la UGR
 		</template>
 	</category>
 
@@ -97,7 +97,27 @@
 		</template>
 	</category>
 
+	<!-- Tercera pregunta, cuales son tus 3 mayores virtudes -->
+	<category>
+		<pattern>* [3 tres] ^ virtudes</pattern>
+		<template>
+			Soy ordenada en el trabajo.
+			Me gusta aprender cosas nuevas.
+		</template>
+	</category>
 
+	<category>
+		<pattern>TE CONSIDERAS UNA PERSONA <set>sinonimos_creativo</set></pattern>
+		<template>
+			Me considero bastante creativa, sí
+		</template>
+	</category>
 
+	<category>
+		<pattern>POR QUE DEBERIAMOS ESCOGERTE A TI</pattern>
+		<template>
+			Porque me han hecho para este trabajo
+		</template>
+	</category>
 
 </aiml>
