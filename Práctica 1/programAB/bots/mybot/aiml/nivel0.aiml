@@ -1,90 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aiml version="2.0">
 
-	<!-- SALUDOS -->
-	<category>
-		<pattern>HOLA ^</pattern>
-		<template>
-			<random>
-				<li>Hola</li>
-				<li>Buenas</li>
-				<li>Hey</li>
-			</random>, que tal?
-		</template>
-	</category>
-
-	<category>
-		<pattern>^ QUE TAL TU</pattern>
-		<template>Estoy genial!! Me encanta conocer gente nueva</template>
-	</category>
-
-	<category>
-		<pattern>^ y tu</pattern>
-		<template><srai>^ QUE TAL TU</srai></template>
-	</category>
-
-	<!-- PEDIR NOMBRE -->
-	<category>
-		<pattern>COMO [SE TE] LLAMA+</pattern>
-		<template>
-			<random>
-				<li>Me llamo</li>
-				<li>Soy</li>
-			</random> <bot name="botmaster"/>
-		</template>
-	</category>
-
-	<!-- Nombre del entrevistador -->
-	<category>
-		<pattern>^ ME LLAMO *</pattern>
-		<template>
-			<think><set name="nombre"><star index="2"/></set></think>
-			<get name="nombre"/> es un bonito nombre
-		</template>
-	</category>
-
-	<category>
-		<pattern>^ SOY *</pattern>
-		<template>
-			<srai>^ ME LLAMO *</srai>
-		</template>
-	</category>
-
-	<category>
-		<pattern>CUAL ES MI NOMBRE</pattern>
-		<template>
-			<condition name="nombre">
-				<li value="unknown">No soy adivino, aún no sé tu nombre</li>
-				<li>Tu nombre es <get name="nombre"/></li>
-			</condition>
-		</template>
-	</category>
-
-	<category>
-		<pattern>* MI NOMBRE</pattern>
-		<template><srai>CUAL ES MI NOMBRE</srai></template>
-	</category>
-
-	<category>
-		<pattern>^ COMO ME LLAMO</pattern>
-		<template><srai>CUAL ES MI NOMBRE</srai></template>
-	</category>
-
-	<category>
-		<pattern>MI COLOR FAVORITO ES (EL) ^</pattern>
-		<template>
-			<think><set name="color"><star/></set></think>
-			El <get name="color"/> es un color que no me gusta
-		</template>
-	</category>
-
 	<!-- ENTREVISTA -->
 	<!-- Primera pregunta, hablame de ti-->
 	<!-- sobre| de | un poco de -->
 	<category>
-		<pattern><set>sinonimos_hablar</set> [SOBRE DE UN ALGO] ^ TI</pattern>
+		<pattern><set>sinonimos_hablar</set> ^ [SOBRE DE UN ALGO] ^ TI</pattern>
 		<template>
-			Soy HAL... quiero decir <bot name="botmaster"/>, una estudiante de informática de la UGR
+			Soy HALf... quiero decir <bot name="botmaster"/>, una estudiante de informática de la UGR
 		</template>
 	</category>
 
@@ -114,9 +37,16 @@
 	</category>
 
 	<category>
-		<pattern>POR QUE DEBERIAMOS ESCOGERTE A TI</pattern>
+		<pattern>POR QUE DEBERIAMOS ESCOGERTE ^</pattern>
 		<template>
-			Porque me han hecho para este trabajo
+			Porque me han hecho para este trabajo ●ω●
+		</template>
+	</category>
+
+	<category>
+		<pattern>POR QUE DEBERIAMOS ESCOGERLE ^</pattern>
+		<template>
+			<srai>POR QUE DEBERIAMOS ESCOGERTE ^</srai>
 		</template>
 	</category>
 
