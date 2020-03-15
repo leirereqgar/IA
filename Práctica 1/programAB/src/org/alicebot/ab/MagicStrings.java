@@ -106,4 +106,3 @@ public class MagicStrings {
     public static void setRootPath() {setRootPath(System.getProperty("user.dir"));}
 
 }
-

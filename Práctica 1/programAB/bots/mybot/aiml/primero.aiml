@@ -25,7 +25,7 @@
 </category>
 
 <category>
-	<pattern><set>emojis</set></pattern>
+	<pattern><set>emoji</set></pattern>
 	<template>
 		<map name="map_emojis"><star/></map>
 	</template>
@@ -91,6 +91,13 @@
 	<pattern>PUTA</pattern>
 	<template>
 		Está diciendome puta puta puta, sin ser yo nada de eso
+	</template>
+</category>
+
+<category>
+	<pattern>^</pattern>
+	<template>
+		Illo no se
 	</template>
 </category>
 

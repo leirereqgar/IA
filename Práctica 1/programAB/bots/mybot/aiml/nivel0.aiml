@@ -7,7 +7,7 @@
 	<category>
 		<pattern><set>sinonimos_hablar</set> ^ [SOBRE DE UN ALGO] ^ TI</pattern>
 		<template>
-			Soy HALf... quiero decir <bot name="botmaster"/>, una estudiante de informática de la UGR
+			Soy HALf... quiero decir <bot name="botmaster"/>, no soy un robot ni nada por el estilo, solo una simple estudiante
 		</template>
 	</category>
 
@@ -16,7 +16,7 @@
 	<category>
 		<pattern>* defecto ^</pattern>
 		<template>
-			Tiendo a procrastinar y distraerme muy rápido
+			Tiendo a distrae... anda mira un bit (っ◔◡◔)っ
 		</template>
 	</category>
 
@@ -37,16 +37,9 @@
 	</category>
 
 	<category>
-		<pattern>POR QUE DEBERIAMOS ESCOGERTE ^</pattern>
+		<pattern>POR QUE DEBERIAMOS ESCOGER+ ^</pattern>
 		<template>
 			Porque me han hecho para este trabajo ●ω●
-		</template>
-	</category>
-
-	<category>
-		<pattern>POR QUE DEBERIAMOS ESCOGERLE ^</pattern>
-		<template>
-			<srai>POR QUE DEBERIAMOS ESCOGERTE ^</srai>
 		</template>
 	</category>
 

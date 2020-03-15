@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+	<category>
+		<pattern><set>month_es</set></pattern>
+		<template>
+			<map name="meses"><star/></map>
+		</template>
+	</category>
+
+	<category>
+		<pattern>Quiero una cita para el * de *</pattern>
+		<template>Muy bien, voy a comprobarlo...
+			<think>
+				<set var="dia"><star index="1"/>-<srai><star index="2"/></srai>-20</set>
+				<set var="ocupado">
+					<srai>IS <get var="dia"/> BUSY</srai>
+				</set>
+			</think>
+			<condition var="ocupado">
+				<li value="TRUE">Lo siento ese día no puede ser, ¿le interesa otro?</li>
+				<li>¿A que hora le gustaria?</li>
+			</condition>
+		</template>
+	</category>
+
+	<category>
+		<pattern>IS * BUSY</pattern>
+		<template>
+			<think>
+				<set var="contador">1</set>
+				<set var="salida">1</set>
+				<set var="hor">24</set>
+			</think>
+
+			<think>
+				<condition var="contador">
+					<li><value><get var="hor"/></value><get var="salida"/></li>
+					<li>
+						<think>
+							<set var="contador"><srai>PLUS <get var="contador"/> 1</srai></set>
+							<set var="salida"><get var="contador"/></set>
+							<set var="h"><map name="map_horas"><get var="contador"/></map>:00</set>
+							<set var="ocupado"><srai>IS BUSY DAY <star/> AT <get var="h"/></srai></set>
+						</think>
+						<loop/>
+						<condition var="ocupado">
+							<li value="FALSE"><set var="salida">24</set></li>
+						</condition>
+					</li>
+				</condition>
+			</think>
+			<get var="ocupado"/>
+		</template>
+	</category>
+
+</aiml>
