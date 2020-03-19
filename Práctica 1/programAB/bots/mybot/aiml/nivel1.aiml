@@ -166,34 +166,25 @@ Ese dia tengo las siguientes horas libres:
 		<pattern>IS * BUSY</pattern>
 		<template>
 			<think>
-				<set var="contador"><srai>ORDINAL 08:00</srai></set>
-				<set var="salida"><srai>ORDINAL 08:00</srai></set>
-				<set var="hor"><srai>ORDINAL 20:00</srai></set>
+				<set var="inicio"><srai>ORDINAL 08:00</srai></set>
+				<set var="fin"><srai>ORDINAL 20:00</srai></set>
+				<set var="horario">
+					<srai>SUBLIST FROM <get var="inicio"/> TO <get var="fin"/> FROM <srai>LIST OF DAY <star/></srai></srai>
+				</set>
+				<set var="pos">
+					<srai>FINDITEM null IN <get var="horario"/></srai>
+				</set>
 			</think>
-
 			<think>
-				<condition var="contador">
-					<li><value><get var="hor"/></value><get var="salida"/></li>
+				<condition var="ocupado">
+					<li value="0">
+						<set var="ocupado">TRUE</set>
+					</li>
 					<li>
-						<think>
-							<set var="h"><map name="map_horas"><get var="contador"/></map>:00</set>
-							<set var="contador"><srai>PLUS <get var="contador"/> 1</srai></set>
-							<set var="salida"><get var="contador"/></set>
-							<set var="ocupado"><srai>IS BUSY DAY <star/> AT <get var="h"/></srai></set>
-						</think>
-						<loop/>
-						<condition var="ocupado">
-							<li value="FALSE">
-								<think>
-									<set var="salida"><srai>ORDINAL 20:00</srai></set>
-									<set var="contador"><srai>ORDINAL 20:00</srai></set>
-								</think>
-							</li>
-						</condition>
+						<set var="ocupado">FALSE</set>
 					</li>
 				</condition>
 			</think>
-
 			<get var="ocupado"/>
 		</template>
 	</category>
