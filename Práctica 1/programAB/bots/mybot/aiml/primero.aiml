@@ -15,20 +15,13 @@
 </category>
 
 <category>
-	<pattern>^ QUE TAL TU</pattern>
+	<pattern>^ QUE TAL (TU)</pattern>
 	<template>Estoy genial!! Me encanta conocer gente nueva</template>
 </category>
 
 <category>
 	<pattern>^ y tu</pattern>
 	<template><srai>^ QUE TAL TU</srai></template>
-</category>
-
-<category>
-	<pattern><set>emoji</set></pattern>
-	<template>
-		<map name="map_emojis"><star/></map>
-	</template>
 </category>
 
 <!-- PEDIR NOMBRE -->
@@ -38,7 +31,7 @@
 		<random>
 			<li>Me llamo</li>
 			<li>Soy</li>
-		</random> <bot name="botmaster"/>
+		</random> <bot name="name"/>
 	</template>
 </category>
 

@@ -1,6 +1,6 @@
-name:botForIA
+name:HALfonso
 email:nobody@nowhere.com
 gender:male
-botmaster:theBoss
+botmaster:Leire
 organization:ugr
 version:0.0.4

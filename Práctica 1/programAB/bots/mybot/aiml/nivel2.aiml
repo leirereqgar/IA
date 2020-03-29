@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+	<category>
+		<pattern>patata</pattern>
+		<template>
+			<set name="dia">
+				<srai>TOMORROWDATE</srai>
+			</set>
+		</template>
+	</category>
+</aiml>

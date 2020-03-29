@@ -199,10 +199,17 @@ Ese dia tengo las siguientes horas libres:
 	</category>
 
 	<category>
-		<pattern>^A LAS *</pattern>
-		<template>De acuerdo, apuntaré su cita...
-			<get name="dia"/>
-			<srai>MARK OCUPADO AT <star/> ON <get name="dia"/></srai>
+		<pattern>A LAS *</pattern>
+		<template>
+			<condition name="dia">
+				<li value="unknown">
+A esa hora pero, ¿que dia?
+				</li>
+				<li>
+De acuerdo, apuntare su cita...
+					<srai>MARK OCUPADO AT <star/> ON <get name="dia"/></srai>
+				</li>
+			</condition>
 		</template>
 	</category>
 

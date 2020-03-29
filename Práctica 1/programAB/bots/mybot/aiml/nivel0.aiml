@@ -12,23 +12,29 @@
 	</category>
 
 	<!-- Segunda pregunta, cual es tu mayor defecto -->
-	<!-- comodines para englobar todas las combinaciones posibles -->
 	<category>
-		<pattern>* defecto ^</pattern>
+		<pattern>Cual (crees) es tu mayor defecto</pattern>
 		<template>
 			Tiendo a distrae... anda mira un bit (っ◔◡◔)っ
 		</template>
 	</category>
 
-	<!-- Tercera pregunta, cuales son tus 3 mayores virtudes -->
 	<category>
-		<pattern>* [3 tres] ^ virtudes</pattern>
+		<pattern>Tienes algun defecto</pattern>
 		<template>
-			Soy ordenada en el trabajo.
-			Me gusta aprender cosas nuevas.
+			<srai>Cual es tu mayor defecto</srai>
 		</template>
 	</category>
 
+	<!-- Tercera pregunta, cuales son tus 3 mayores virtudes -->
+	<category>
+		<pattern>Dime 3 virtudes</pattern>
+		<template>
+Soy ordenada en el trabajo, me gusta aprender cosas nuevas y me esfuerzo en acabar el trabajo lo antes posible
+		</template>
+	</category>
+
+	<!-- Cuarta pregunta, crees que eres creativo -->
 	<category>
 		<pattern>TE CONSIDERAS UNA PERSONA <set>sinonimos_creativo</set></pattern>
 		<template>
@@ -36,6 +42,7 @@
 		</template>
 	</category>
 
+	<!-- Quinta pregunta, por que deberiamos escogerte -->
 	<category>
 		<pattern>POR QUE DEBERIAMOS ESCOGER+ ^</pattern>
 		<template>
