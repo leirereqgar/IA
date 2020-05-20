@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/Comportamientos_Jugador/aldeano.cpp" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/CMakeFiles/comportamientosLib.dir/Comportamientos_Jugador/aldeano.cpp.o"
-  "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/Comportamientos_Jugador/jugador.cpp" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/CMakeFiles/comportamientosLib.dir/Comportamientos_Jugador/jugador.cpp.o"
-  "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/comportamientos/comportamiento.cpp" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/CMakeFiles/comportamientosLib.dir/src/comportamientos/comportamiento.cpp.o"
+  "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/Comportamientos_Jugador/aldeano.cpp" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/CMakeFiles/comportamientosLib.dir/Comportamientos_Jugador/aldeano.cpp.o"
+  "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/Comportamientos_Jugador/jugador.cpp" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/CMakeFiles/comportamientosLib.dir/Comportamientos_Jugador/jugador.cpp.o"
+  "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/comportamientos/comportamiento.cpp" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/CMakeFiles/comportamientosLib.dir/src/comportamientos/comportamiento.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

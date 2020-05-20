@@ -6,31 +6,31 @@
 
 #IncludeRegexTransform: 
 
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/entidad.cpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/entidad.cpp
 motorlib/entidad.hpp
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motorlib/entidad.hpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motorlib/entidad.hpp
 
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/mapa.cpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/mapa.cpp
 motorlib/mapa.hpp
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motorlib/mapa.hpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motorlib/mapa.hpp
 
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/monitor.cpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/monitor.cpp
 motorlib/monitor.hpp
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motorlib/monitor.hpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motorlib/monitor.hpp
 fstream
 -
 
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motor_grafico.cpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motor_grafico.cpp
 motorlib.hpp
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motorlib.hpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motorlib.hpp
 glui/glui.h
 -
 dirent.h
 -
 
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motor_juego.cpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motor_juego.cpp
 motorlib.hpp
-/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/src/motorlib/motorlib.hpp
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motorlib.hpp
 unistd.h
 -
 

@@ -68,10 +68,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux"
+CMAKE_SOURCE_DIR = "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux"
+CMAKE_BINARY_DIR = "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -100,9 +100,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/CMakeFiles" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/CMakeFiles" "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target

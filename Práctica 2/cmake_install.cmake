@@ -1,4 +1,4 @@
-# Install script for directory: /home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux
+# Install script for directory: /home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

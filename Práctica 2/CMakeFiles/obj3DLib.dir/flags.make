@@ -6,5 +6,5 @@ CXX_FLAGS =  -fopenmp -pthread -std=c++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/practica2_linux/include" 
+CXX_INCLUDES = -I"/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/include" 
 
