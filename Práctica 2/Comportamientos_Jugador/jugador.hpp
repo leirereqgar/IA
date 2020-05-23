@@ -9,21 +9,24 @@ struct estado {
    int fila;
    int columna;
    int orientacion;
+	bool bikini;
+	bool zapatillas;
 };
 
 struct nodo{
 	estado st;
 	list<Action> secuencia;
-	int costo;
+	int costog;
+	int costoh;
 };
 
-struct ComparaEstados{
-	bool operator()(const estado &a, const estado &n) const{
-		if ((a.fila > n.fila) or (a.fila == n.fila and a.columna > n.columna) or
-	      (a.fila == n.fila and a.columna == n.columna and a.orientacion > n.orientacion))
-			return true;
-		else
-			return false;
+struct ComparaEstados {
+	bool operator () (const estado & a, const estado & n) const {
+		return (a.fila    != n.fila)
+		|| (a.columna     != n.columna)
+		|| (a.orientacion != n.orientacion)
+		|| (a.bikini      != n.bikini )
+		|| (a.zapatillas  != n.zapatillas );
 	}
 };
 
@@ -31,7 +34,7 @@ struct ComparaCosto{
 	bool operator()(const nodo &a, const nodo &b) const {
 		bool menor = false;
 
-		if (a.costo <= b.costo)
+		if (a.costog + a.costoh <= b.costog + b.costoh)
 			menor = true;
 
 		return menor;
@@ -75,7 +78,6 @@ class ComportamientoJugador : public Comportamiento {
       estado actual, destino;
       list<Action> plan;
       bool hayplan;
-      bool bikini, zapatillas;
 
       // Métodos privados de la clase
       void asignarCosto(nodo &nodo);

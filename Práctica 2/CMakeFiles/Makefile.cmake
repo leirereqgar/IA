@@ -55,9 +55,9 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/BelkanSG.dir/DependInfo.cmake"
   "CMakeFiles/Belkan.dir/DependInfo.cmake"
-  "CMakeFiles/obj3DLib.dir/DependInfo.cmake"
-  "CMakeFiles/GLUILib.dir/DependInfo.cmake"
-  "CMakeFiles/modelosBelkanLib.dir/DependInfo.cmake"
-  "CMakeFiles/comportamientosLib.dir/DependInfo.cmake"
   "CMakeFiles/motorLib.dir/DependInfo.cmake"
+  "CMakeFiles/GLUILib.dir/DependInfo.cmake"
+  "CMakeFiles/comportamientosLib.dir/DependInfo.cmake"
+  "CMakeFiles/modelosBelkanLib.dir/DependInfo.cmake"
+  "CMakeFiles/obj3DLib.dir/DependInfo.cmake"
   )

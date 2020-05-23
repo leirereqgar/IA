@@ -23,6 +23,7 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	}
 
 	Action sigAction;
+
 	if(hayplan && plan.size() > 0) { // Hay un plan no vacío
 		sigAction = plan.front(); //tomamos la siguiente accion del hayplan
 		plan.erase(plan.begin()); // eliminamos la acción de la lista de acciones
@@ -92,12 +93,22 @@ bool ComportamientoJugador::HayObstaculoDelante(estado &st){
 	// Miro si en esa casilla hay un obstaculo infranqueable
 	if (!EsObstaculo(mapaResultado[fil][col])){
 		// No hay obstaculo, actualizo el parámetro st poniendo la casilla de delante.
-    st.fila = fil;
+		st.fila = fil;
 		st.columna = col;
+
+		// Hay que modificar el estado del bikini y las zapatillas antes de comprobar
+		// si el estado está en cerrados para que no los tomo por un nodo ya visitado
+		if(mapaResultado[fil][col] == 'K'){
+			st.bikini = true;
+		}
+
+		if(mapaResultado[fil][col] == 'D') {
+			st.zapatillas = true;
+		}
 		return false;
 	}
 	else{
-	  return true;
+		return true;
 	}
 }
 
@@ -107,34 +118,35 @@ void ComportamientoJugador::asignarCosto(nodo &n){
 	char casilla = mapaResultado[fil][col];
 	switch (casilla){
 		case 'A':
-			n.costo = 100;
+			if(n.st.bikini)
+				n.costog += 10;
+			else
+				n.costog += 100;
 			break;
 		case 'B':
-			n.costo = 50;
+			if(n.st.zapatillas)
+				n.costog += 5;
+			else
+				n.costog += 50;
 			break;
 		case 'T':
-			n.costo = 2;
+			n.costog += 2;
 			break;
 		case 'S':
-			n.costo = 1;
+			n.costog += 1;
 			break;
 		case 'K':
-			n.costo = 1;
-			bikini    = true;
+			n.costog += 1;
+			n.st.bikini    = true;
 			break;
 		case 'D':
-			n.costo  = 1;
-			zapatillas = true;
+			n.costog  += 1;
+			n.st.zapatillas = true;
 			break;
 		case 'X':
-			n.costo = 1;
+			n.costog += 1;
 			break;
 	}
-
-	if(casilla=='A' && bikini)
-		n.costo = 10;
-	if(casilla=='B' && zapatillas)
-		n.costo = 5;
 }
 
 
@@ -276,64 +288,98 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 	return false;
 }
 
+bool MismoEstado (const estado & a, const estado & b) {
+	return (a.fila == b.fila && a.columna == b.columna
+		&&   a.orientacion == b.orientacion
+		&&   a.bikini == b.bikini && a.zapatillas == b.zapatillas);
+}
+
+multiset<nodo, ComparaCosto>::const_iterator BuscaNodo(const multiset<nodo, ComparaCosto> & abiertos, const nodo &n){
+	for (auto it = abiertos.begin(); it != abiertos.end(); it++) {
+		if(MismoEstado((*it).st, n.st))
+			return it;
+	}
+
+	return abiertos.end();
+}
+
 //Costo uniforme
 bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, const estado &destino, list<Action> &plan){
 	//Borrar la lista
 	cout << "Calculando plan" << endl;
 	plan.clear();
 
-	set<estado,ComparaEstados> generados; // Lista de Cerrados
-	queue<nodo> cola; // Lista de abiertos
-	set<nodo,ComparaCosto> por_costo;
+	set<estado,ComparaEstados> cerrados; // Lista de Cerrados
+	multiset<nodo,ComparaCosto> abiertos;
 
 	nodo current;
 	current.st = origen;
 	current.secuencia.empty();
-	current.costo = 0;
+	current.costog = 0;
+	current.costoh = 0;
+	current.st.bikini     = false;
+	current.st.zapatillas = false;
 
-	cola.push(current);
+	abiertos.insert(current);
 
-	while (!cola.empty() && (current.st.fila!=destino.fila || current.st.columna != destino.columna)){
-		cola.pop();
-		generados.insert(current.st);
+	while (!abiertos.empty() && (current.st.fila!=destino.fila || current.st.columna != destino.columna)){
+		abiertos.erase(abiertos.begin());
+		cerrados.insert(current.st);
 
 		// Generar descendiente de girar a la derecha
 		nodo hijoTurnR = current;
 		hijoTurnR.st.orientacion = (hijoTurnR.st.orientacion+1) % 4;
-		asignarCosto(hijoTurnR);
-		if (generados.find(hijoTurnR.st) == generados.end()){
+		if (cerrados.find(hijoTurnR.st) == cerrados.end()){
+			asignarCosto(hijoTurnR);
 			hijoTurnR.secuencia.push_back(actTURN_R);
-			por_costo.insert(hijoTurnR);
+
+			auto it = BuscaNodo(abiertos, hijoTurnR);
+
+			if (it == abiertos.end())
+				abiertos.insert(hijoTurnR);
+			else if (hijoTurnR.costog < (*it).costog) {
+				abiertos.erase(it);
+				abiertos.insert(hijoTurnR);
+			}
 		}
 
 		// Generar descendiente de girar a la izquierda
 		nodo hijoTurnL = current;
 		hijoTurnL.st.orientacion = (hijoTurnL.st.orientacion+3)%4;
-		asignarCosto(hijoTurnL);
-		if (generados.find(hijoTurnL.st) == generados.end()){
+		if (cerrados.find(hijoTurnL.st) == cerrados.end()){
+			asignarCosto(hijoTurnL);
 			hijoTurnL.secuencia.push_back(actTURN_L);
-			por_costo.insert(hijoTurnL);
+
+			auto it = BuscaNodo(abiertos, hijoTurnL);
+
+			if (it == abiertos.end())
+				abiertos.insert(hijoTurnL);
+			else if (hijoTurnL.costog < (*it).costog) {
+				abiertos.erase(it);
+				abiertos.insert(hijoTurnL);
+			}
 		}
 
 		// Generar descendiente de avanzar
 		nodo hijoForward = current;
-		asignarCosto(hijoForward);
-		if (!HayObstaculoDelante(hijoForward.st)){
-			if (generados.find(hijoForward.st) == generados.end()){
-				hijoForward.secuencia.push_back(actFORWARD);
-				por_costo.insert(hijoForward);
+		if (!HayObstaculoDelante(hijoForward.st)
+		&& (cerrados.find(hijoForward.st) == cerrados.end())){
+			hijoForward.secuencia.push_back(actFORWARD);
+			asignarCosto(hijoForward);
+
+			auto it = BuscaNodo(abiertos, hijoForward);
+
+			if (it == abiertos.end()) {
+				abiertos.insert(hijoForward);
+			}
+			else if (hijoForward.costog < (*it).costog) {
+				abiertos.erase(it);
+				abiertos.insert(hijoForward);
 			}
 		}
 
-		//Introducir los nodos ordenados por su coste en la cola
-		set<nodo, ComparaCosto>::iterator it;
-		for(it = por_costo.begin(); it != por_costo.end(); ++it){
-			cola.push(*it);
-		}
-		por_costo.clear();
-
-		if (!cola.empty()){
-			current = cola.front();
+		if (!abiertos.empty()){
+			current = *abiertos.begin();
 		}
 	}
 
