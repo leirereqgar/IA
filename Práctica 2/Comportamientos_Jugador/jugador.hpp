@@ -21,12 +21,40 @@ struct nodo{
 };
 
 struct ComparaEstados {
+	// MODIFICADO: al comparar estados, tenemos que comparar que al menos
+	// un elemento es distinto para que entre, comparamos si una fila es distinta, si es igual,
+	// que una columna es distinta, si es igual, que la orientacion es disitnta, si todo lo anterior es igual,
+	// que si tiene el bikini es distinto, y si es igual, que las zapatillas son disitntas
+	// IMPORTANTE, no modificar, ya que si le obligas a que el bikini o las zapatillas
+	// sean siempre distintos, no va a funcionar, ya que no sigues un orden fijo de comparacion
+	// el set no sabe ordenarlo y peta
 	bool operator () (const estado & a, const estado & n) const {
-		return (a.fila    != n.fila)
-		|| (a.columna     != n.columna)
-		|| (a.orientacion != n.orientacion)
-		|| (a.bikini      != n.bikini )
-		|| (a.zapatillas  != n.zapatillas );
+		if (((a.fila > n.fila)
+		||   (a.fila == n.fila && a.columna > n.columna)
+		||   (a.fila == n.fila && a.columna == n.columna && a.orientacion > n.orientacion)
+		||   (a.fila == n.fila && a.columna == n.columna && a.orientacion == n.orientacion && a.bikini != n.bikini )
+		||   (a.fila == n.fila && a.columna == n.columna && a.orientacion == n.orientacion && a.bikini == n.bikini && a.zapatillas != n.zapatillas ))
+		) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+};
+
+
+struct ComparaEstadosS {
+	bool operator () (const estado & a, const estado & n) const {
+		if ((a.fila > n.fila)
+		||   (a.fila == n.fila && a.columna > n.columna)
+		||   (a.fila == n.fila && a.columna == n.columna && a.orientacion > n.orientacion)
+		) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 };
 

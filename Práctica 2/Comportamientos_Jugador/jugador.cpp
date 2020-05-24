@@ -200,7 +200,7 @@ bool ComportamientoJugador::pathFinding_Profundidad(const estado &origen, const 
 	//Borro la lista
 	cout << "Calculando plan\n";
 	plan.clear();
-	set<estado,ComparaEstados> generados; // Lista de Cerrados
+	set<estado,ComparaEstadosS> generados; // Lista de Cerrados
 	stack<nodo> pila;											// Lista de Abiertos
 
 	nodo current;
@@ -270,7 +270,7 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 	cout << "Calculando plan\n";
 	plan.clear();
 
-	set<estado,ComparaEstados> generados; // Lista de Cerrados
+	set<estado,ComparaEstadosS> generados; // Lista de Cerrados
 	queue<nodo> cola;
 
 	nodo current;
