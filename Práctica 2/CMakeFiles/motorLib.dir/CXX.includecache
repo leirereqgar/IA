@@ -34,6 +34,10 @@ motorlib.hpp
 unistd.h
 -
 
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/util.cpp
+motorlib/util.h
+/home/leirereqgar/Documents/UGR/2º Informática/2º Cuatrimestre/Inteligencia Artificial/Prácticas/IA/Práctica 2/src/motorlib/motorlib/util.h
+
 Comportamientos_Jugador/aldeano.hpp
 chrono
 -

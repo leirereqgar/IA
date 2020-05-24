@@ -8,22 +8,24 @@
 #include <queue>
 
 Action ComportamientoJugador::think(Sensores sensores) {
-	// Por si se cambia el destino manualmente en medio de la ejecución del plan
-	if(destino.fila != sensores.destinoF || destino.columna != sensores.destinoC)
-		hayplan = false;
+	if(sensores.nivel == 4) {
+		// Por si se cambia el destino manualmente en medio de la ejecución del plan
+		if(destino.fila != sensores.destinoF || destino.columna != sensores.destinoC)
+			hayplan = false;
 
-	if(sensores.terreno[0] == 'K')
-		actual.bikini = true;
+		if(sensores.terreno[0] == 'K')
+			actual.bikini = true;
 
-	if(sensores.terreno[0] == 'D')
-		actual.zapatillas = true;
+		if(sensores.terreno[0] == 'D')
+			actual.zapatillas = true;
 
 	// Obligar a recalcular si no se tienen las zapatillas o el bikini y va
 	// a entrar en agua o bosque
-	if(sensores.terreno[2] == 'A' && !actual.bikini
-	|| sensores.terreno[2] == 'B' && !actual.zapatillas)
-		hayplan = false;
+		if(sensores.terreno[2] == 'A' && !actual.bikini
+		|| sensores.terreno[2] == 'B' && !actual.zapatillas)
+			hayplan = false;
 
+	}
 	if(!hayplan) {
 		actual.fila = sensores.posF;
 		actual.columna = sensores.posC;
@@ -184,6 +186,9 @@ void ComportamientoJugador::asignarCosto(nodo &n){
 		case 'X':
 			n.costog += 1;
 			break;
+		case '?':
+			n.costog += 3;
+			break;
 	}
 }
 
@@ -270,7 +275,7 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 
 	nodo current;
 	current.st = origen;
-	current.secuencia.clear();
+	current.secuencia.empty();
 
 	cola.push(current);
 
@@ -544,88 +549,38 @@ bool ComportamientoJugador::pathFinding_A_Estrella(const estado & origen, const 
 }
 
 void ComportamientoJugador::DescubreMapa (Sensores sensores) {
+	int k = 0;
+
 	mapaResultado[sensores.posF][sensores.posC] = sensores.terreno[0];
 
-	switch (sensores.sentido) {
-		case Orientacion::norte:
-			mapaResultado[sensores.posF-1][sensores.posC-1] = sensores.terreno[1];
-			mapaResultado[sensores.posF-1][sensores.posC]   = sensores.terreno[2];
-			mapaResultado[sensores.posF-1][sensores.posC+1] = sensores.terreno[3];
+	for (unsigned i=0; i<4; i++) {
+		for (unsigned j=0; j<=i*2; j++) {
+			switch (sensores.sentido) {
+				case norte:
+					if (mapaResultado[sensores.posF - i][sensores.posC - i + j] == '?')
+						 mapaResultado[sensores.posF - i][sensores.posC - i + j] = sensores.terreno[k];
+						k++;
+						break;
 
-			mapaResultado[sensores.posF-2][sensores.posC-2] = sensores.terreno[4];
-			mapaResultado[sensores.posF-2][sensores.posC-1] = sensores.terreno[5];
-			mapaResultado[sensores.posF-2][sensores.posC]   = sensores.terreno[6];
-			mapaResultado[sensores.posF-2][sensores.posC+1] = sensores.terreno[7];
-			mapaResultado[sensores.posF-2][sensores.posC+2] = sensores.terreno[8];
+				case sur:
+					if (mapaResultado[sensores.posF + i][sensores.posC + i - j] == '?')
+						 mapaResultado[sensores.posF + i][sensores.posC + i - j] = sensores.terreno[k];
+					k++;
+					break;
 
-			mapaResultado[sensores.posF-3][sensores.posC-3] = sensores.terreno[9];
-			mapaResultado[sensores.posF-3][sensores.posC-2] = sensores.terreno[10];
-			mapaResultado[sensores.posF-3][sensores.posC-1] = sensores.terreno[11];
-			mapaResultado[sensores.posF-3][sensores.posC]   = sensores.terreno[12];
-			mapaResultado[sensores.posF-3][sensores.posC+1] = sensores.terreno[13];
-			mapaResultado[sensores.posF-3][sensores.posC+2] = sensores.terreno[14];
-			mapaResultado[sensores.posF-3][sensores.posC+3] = sensores.terreno[15];
-		break;
+				case este:
+					if (mapaResultado[sensores.posF - i + j][sensores.posC + i] == '?')
+						 mapaResultado[sensores.posF - i + j][sensores.posC + i] = sensores.terreno[k];
+					k++;
+					break;
 
-		case Orientacion::sur:
-			mapaResultado[sensores.posF+1][sensores.posC-1] = sensores.terreno[1];
-			mapaResultado[sensores.posF+1][sensores.posC]   = sensores.terreno[2];
-			mapaResultado[sensores.posF+1][sensores.posC+1] = sensores.terreno[3];
-
-			mapaResultado[sensores.posF+2][sensores.posC-2] = sensores.terreno[4];
-			mapaResultado[sensores.posF+2][sensores.posC-1] = sensores.terreno[5];
-			mapaResultado[sensores.posF+2][sensores.posC]   = sensores.terreno[6];
-			mapaResultado[sensores.posF+2][sensores.posC+1] = sensores.terreno[7];
-			mapaResultado[sensores.posF+2][sensores.posC+2] = sensores.terreno[8];
-
-			mapaResultado[sensores.posF+3][sensores.posC-3] = sensores.terreno[9];
-			mapaResultado[sensores.posF+3][sensores.posC-2] = sensores.terreno[10];
-			mapaResultado[sensores.posF+3][sensores.posC-1] = sensores.terreno[11];
-			mapaResultado[sensores.posF+3][sensores.posC]   = sensores.terreno[12];
-			mapaResultado[sensores.posF+3][sensores.posC+1] = sensores.terreno[13];
-			mapaResultado[sensores.posF+3][sensores.posC+2] = sensores.terreno[14];
-			mapaResultado[sensores.posF+3][sensores.posC+3] = sensores.terreno[15];
-		break;
-
-		case Orientacion::este:
-			mapaResultado[sensores.posF-1][sensores.posC+1] = sensores.terreno[1];
-			mapaResultado[sensores.posF][sensores.posC+1]   = sensores.terreno[2];
-			mapaResultado[sensores.posF+1][sensores.posC+1] = sensores.terreno[3];
-
-			mapaResultado[sensores.posF-2][sensores.posC+2] = sensores.terreno[4];
-			mapaResultado[sensores.posF-1][sensores.posC+2] = sensores.terreno[5];
-			mapaResultado[sensores.posF][sensores.posC+2]   = sensores.terreno[6];
-			mapaResultado[sensores.posF+1][sensores.posC+2] = sensores.terreno[7];
-			mapaResultado[sensores.posF+2][sensores.posC+2] = sensores.terreno[8];
-
-			mapaResultado[sensores.posF-3][sensores.posC+3] = sensores.terreno[9];
-			mapaResultado[sensores.posF-2][sensores.posC+3] = sensores.terreno[10];
-			mapaResultado[sensores.posF-1][sensores.posC+3] = sensores.terreno[11];
-			mapaResultado[sensores.posF][sensores.posC+3]   = sensores.terreno[12];
-			mapaResultado[sensores.posF+1][sensores.posC+3] = sensores.terreno[13];
-			mapaResultado[sensores.posF+2][sensores.posC+3] = sensores.terreno[14];
-			mapaResultado[sensores.posF+3][sensores.posC+3] = sensores.terreno[15];
-		break;
-
-		case Orientacion::oeste:
-			mapaResultado[sensores.posF-1][sensores.posC-1] = sensores.terreno[1];
-			mapaResultado[sensores.posF][sensores.posC-1]   = sensores.terreno[2];
-			mapaResultado[sensores.posF+1][sensores.posC-1] = sensores.terreno[3];
-
-			mapaResultado[sensores.posF-2][sensores.posC-2] = sensores.terreno[4];
-			mapaResultado[sensores.posF-1][sensores.posC-2] = sensores.terreno[5];
-			mapaResultado[sensores.posF][sensores.posC-2]   = sensores.terreno[6];
-			mapaResultado[sensores.posF+1][sensores.posC-2] = sensores.terreno[7];
-			mapaResultado[sensores.posF+2][sensores.posC-2] = sensores.terreno[8];
-
-			mapaResultado[sensores.posF-3][sensores.posC-3] = sensores.terreno[9];
-			mapaResultado[sensores.posF-2][sensores.posC-3] = sensores.terreno[10];
-			mapaResultado[sensores.posF-1][sensores.posC-3] = sensores.terreno[11];
-			mapaResultado[sensores.posF][sensores.posC-3]   = sensores.terreno[12];
-			mapaResultado[sensores.posF+1][sensores.posC-3] = sensores.terreno[13];
-			mapaResultado[sensores.posF+2][sensores.posC-3] = sensores.terreno[14];
-			mapaResultado[sensores.posF+3][sensores.posC-3] = sensores.terreno[15];
-		break;
+				case oeste:
+					if (mapaResultado[sensores.posF + i - j][sensores.posC - i] == '?')
+						 mapaResultado[sensores.posF + i - j][sensores.posC - i] = sensores.terreno[k];
+					k++;
+					break;
+			}
+		}
 	}
 }
 
