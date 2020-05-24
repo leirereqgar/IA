@@ -7,12 +7,23 @@
 #include <stack>
 #include <queue>
 
-
-// Este es el método principal que debe contener los 4 Comportamientos_Jugador
-// que se piden en la práctica. Tiene como entrada la información de los
-// sensores y devuelve la acción a realizar.
 Action ComportamientoJugador::think(Sensores sensores) {
-	//Calculamos el camino hasta el destino si no tenemos aún un plan
+	// Por si se cambia el destino manualmente en medio de la ejecución del plan
+	if(destino.fila != sensores.destinoF || destino.columna != sensores.destinoC)
+		hayplan = false;
+
+	if(sensores.terreno[0] == 'K')
+		actual.bikini = true;
+
+	if(sensores.terreno[0] == 'D')
+		actual.zapatillas = true;
+
+	// Obligar a recalcular si no se tienen las zapatillas o el bikini y va
+	// a entrar en agua o bosque
+	if(sensores.terreno[2] == 'A' && !actual.bikini
+	|| sensores.terreno[2] == 'B' && !actual.zapatillas)
+		hayplan = false;
+
 	if(!hayplan) {
 		actual.fila = sensores.posF;
 		actual.columna = sensores.posC;
@@ -24,14 +35,41 @@ Action ComportamientoJugador::think(Sensores sensores) {
 
 	Action sigAction;
 
-	if(hayplan && plan.size() > 0) { // Hay un plan no vacío
-		sigAction = plan.front(); //tomamos la siguiente accion del hayplan
-		plan.erase(plan.begin()); // eliminamos la acción de la lista de acciones
+	if(sensores.nivel != 4) {
+		if(hayplan && plan.size() > 0) { // Hay un plan no vacío
+			sigAction = plan.front(); //tomamos la siguiente accion del hayplan
+			plan.erase(plan.begin()); // eliminamos la acción de la lista de acciones
+		}
+		else {
+			//Aquí solo entra cuando no es posible encontrar un comportamiento
+			// o está mal implementado el método de búsqueda
+		}
 	}
 	else {
-		//Aquñi solo entra cuando no es posible encontrar un comportamiento
-		// o está mal implementado el método de búsqueda
-		cout << "No deberías ver este mensaje" << endl;
+		DescubreMapa(sensores);
+
+		if(hayplan && plan.size() > 0) {
+			// Esperar si hay un aldeano justo delante
+			if(sensores.superficie[2] == 'a'){
+				sigAction = actIDLE;
+			}
+			else if ((sensores.terreno[2] == 'M' || sensores.terreno[2] == 'P')
+			&& (*plan.begin()) == actFORWARD) {
+						if(sensores.destinoF > sensores.posF || sensores.destinoC > sensores.posC)
+							sigAction = actTURN_R;
+						else
+							sigAction = actTURN_L;
+
+						hayplan = false;
+			}
+			else {
+				sigAction = plan.front();
+
+				plan.erase(plan.begin());
+			}
+		}
+		else if (plan.empty())
+			hayplan = false;
 	}
 
 	return sigAction;
@@ -52,8 +90,8 @@ bool ComportamientoJugador::pathFinding (int level, const estado &origen, const 
 			return pathFinding_CostoUniforme(origen,destino,plan);
 			break;
 		case 4: cout << "Busqueda para el reto\n";
-						// Incluir aqui la llamada al algoritmo de búsqueda usado en el nivel 2
-						break;
+			return pathFinding_A_Estrella(origen, destino, plan);
+			break;
 	}
 	cout << "Comportamiento sin implementar\n";
 	return false;
@@ -162,7 +200,7 @@ bool ComportamientoJugador::pathFinding_Profundidad(const estado &origen, const 
 
 	nodo current;
 	current.st = origen;
-	current.secuencia.empty();
+	current.secuencia.clear();
 
 	pila.push(current);
 
@@ -232,7 +270,7 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 
 	nodo current;
 	current.st = origen;
-	current.secuencia.empty();
+	current.secuencia.clear();
 
 	cola.push(current);
 
@@ -314,7 +352,7 @@ bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, cons
 
 	nodo current;
 	current.st = origen;
-	current.secuencia.empty();
+	current.secuencia.clear();
 	current.costog = 0;
 	current.costoh = 0;
 	current.st.bikini     = false;
@@ -400,7 +438,196 @@ bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, cons
 	return false;
 }
 
+void distanciaManhatan (nodo & origen, const estado & destino) {
+	origen.costoh = abs(origen.st.fila - destino.fila) + abs(origen.st.columna - destino.columna);
+}
 
+//A Estrella
+bool ComportamientoJugador::pathFinding_A_Estrella(const estado & origen, const estado & destino, list<Action> &plan) {
+	//Borrar la lista
+	cout << "Calculando plan" << endl;
+	plan.clear();
+
+	set<estado,ComparaEstados> cerrados; // Lista de Cerrados
+	multiset<nodo,ComparaCosto> abiertos;
+
+	nodo current;
+	current.st = origen;
+	current.secuencia.clear();
+	current.costog = 0;
+	distanciaManhatan(current, destino);
+	current.st.bikini     = origen.bikini;
+	current.st.zapatillas = origen.zapatillas;
+
+	abiertos.insert(current);
+
+	while (!abiertos.empty() && (current.st.fila!=destino.fila || current.st.columna != destino.columna)){
+		abiertos.erase(abiertos.begin());
+		cerrados.insert(current.st);
+
+		// Generar descendiente de girar a la derecha
+		nodo hijoTurnR = current;
+		hijoTurnR.st.orientacion = (hijoTurnR.st.orientacion+1) % 4;
+		if (cerrados.find(hijoTurnR.st) == cerrados.end()){
+			asignarCosto(hijoTurnR);
+			distanciaManhatan(hijoTurnR, destino);
+			hijoTurnR.secuencia.push_back(actTURN_R);
+
+			auto it = BuscaNodo(abiertos, hijoTurnR);
+
+			if (it == abiertos.end())
+				abiertos.insert(hijoTurnR);
+			else if (hijoTurnR.costog + hijoTurnR.costoh < (*it).costog + (*it).costoh) {
+				abiertos.erase(it);
+				abiertos.insert(hijoTurnR);
+			}
+		}
+
+		// Generar descendiente de girar a la izquierda
+		nodo hijoTurnL = current;
+		hijoTurnL.st.orientacion = (hijoTurnL.st.orientacion+3)%4;
+		if (cerrados.find(hijoTurnL.st) == cerrados.end()){
+			asignarCosto(hijoTurnL);
+			distanciaManhatan(hijoTurnL, destino);
+			hijoTurnL.secuencia.push_back(actTURN_L);
+
+			auto it = BuscaNodo(abiertos, hijoTurnL);
+
+			if (it == abiertos.end())
+				abiertos.insert(hijoTurnL);
+			else if (hijoTurnL.costog + hijoTurnL.costoh < (*it).costog + (*it).costoh) {
+				abiertos.erase(it);
+				abiertos.insert(hijoTurnL);
+			}
+		}
+
+		// Generar descendiente de avanzar
+		nodo hijoForward = current;
+		distanciaManhatan(hijoForward, destino);
+		asignarCosto(hijoForward);
+
+		if (!HayObstaculoDelante(hijoForward.st)
+		&& (cerrados.find(hijoForward.st) == cerrados.end())){
+			hijoForward.secuencia.push_back(actFORWARD);
+
+			auto it = BuscaNodo(abiertos, hijoForward);
+
+			if (it == abiertos.end()) {
+				abiertos.insert(hijoForward);
+			}
+			else if (hijoForward.costog + hijoForward.costoh < (*it).costog + (*it).costoh) {
+				abiertos.erase(it);
+				abiertos.insert(hijoForward);
+			}
+		}
+
+		if (!abiertos.empty()){
+			current = *abiertos.begin();
+		}
+	}
+
+	cout << "Terminada la busqueda\n";
+
+	if (current.st.fila == destino.fila && current.st.columna == destino.columna){
+		cout << "Cargando el plan\n";
+		plan = current.secuencia;
+		cout << "Longitud del plan: " << plan.size() << endl;
+		PintaPlan(plan);
+		// ver el plan en el mapa
+		VisualizaPlan(origen, plan);
+		return true;
+	}
+	else
+		cout << "No encontrado plan\n";
+
+	return false;
+}
+
+void ComportamientoJugador::DescubreMapa (Sensores sensores) {
+	mapaResultado[sensores.posF][sensores.posC] = sensores.terreno[0];
+
+	switch (sensores.sentido) {
+		case Orientacion::norte:
+			mapaResultado[sensores.posF-1][sensores.posC-1] = sensores.terreno[1];
+			mapaResultado[sensores.posF-1][sensores.posC]   = sensores.terreno[2];
+			mapaResultado[sensores.posF-1][sensores.posC+1] = sensores.terreno[3];
+
+			mapaResultado[sensores.posF-2][sensores.posC-2] = sensores.terreno[4];
+			mapaResultado[sensores.posF-2][sensores.posC-1] = sensores.terreno[5];
+			mapaResultado[sensores.posF-2][sensores.posC]   = sensores.terreno[6];
+			mapaResultado[sensores.posF-2][sensores.posC+1] = sensores.terreno[7];
+			mapaResultado[sensores.posF-2][sensores.posC+2] = sensores.terreno[8];
+
+			mapaResultado[sensores.posF-3][sensores.posC-3] = sensores.terreno[9];
+			mapaResultado[sensores.posF-3][sensores.posC-2] = sensores.terreno[10];
+			mapaResultado[sensores.posF-3][sensores.posC-1] = sensores.terreno[11];
+			mapaResultado[sensores.posF-3][sensores.posC]   = sensores.terreno[12];
+			mapaResultado[sensores.posF-3][sensores.posC+1] = sensores.terreno[13];
+			mapaResultado[sensores.posF-3][sensores.posC+2] = sensores.terreno[14];
+			mapaResultado[sensores.posF-3][sensores.posC+3] = sensores.terreno[15];
+		break;
+
+		case Orientacion::sur:
+			mapaResultado[sensores.posF+1][sensores.posC-1] = sensores.terreno[1];
+			mapaResultado[sensores.posF+1][sensores.posC]   = sensores.terreno[2];
+			mapaResultado[sensores.posF+1][sensores.posC+1] = sensores.terreno[3];
+
+			mapaResultado[sensores.posF+2][sensores.posC-2] = sensores.terreno[4];
+			mapaResultado[sensores.posF+2][sensores.posC-1] = sensores.terreno[5];
+			mapaResultado[sensores.posF+2][sensores.posC]   = sensores.terreno[6];
+			mapaResultado[sensores.posF+2][sensores.posC+1] = sensores.terreno[7];
+			mapaResultado[sensores.posF+2][sensores.posC+2] = sensores.terreno[8];
+
+			mapaResultado[sensores.posF+3][sensores.posC-3] = sensores.terreno[9];
+			mapaResultado[sensores.posF+3][sensores.posC-2] = sensores.terreno[10];
+			mapaResultado[sensores.posF+3][sensores.posC-1] = sensores.terreno[11];
+			mapaResultado[sensores.posF+3][sensores.posC]   = sensores.terreno[12];
+			mapaResultado[sensores.posF+3][sensores.posC+1] = sensores.terreno[13];
+			mapaResultado[sensores.posF+3][sensores.posC+2] = sensores.terreno[14];
+			mapaResultado[sensores.posF+3][sensores.posC+3] = sensores.terreno[15];
+		break;
+
+		case Orientacion::este:
+			mapaResultado[sensores.posF-1][sensores.posC+1] = sensores.terreno[1];
+			mapaResultado[sensores.posF][sensores.posC+1]   = sensores.terreno[2];
+			mapaResultado[sensores.posF+1][sensores.posC+1] = sensores.terreno[3];
+
+			mapaResultado[sensores.posF-2][sensores.posC+2] = sensores.terreno[4];
+			mapaResultado[sensores.posF-1][sensores.posC+2] = sensores.terreno[5];
+			mapaResultado[sensores.posF][sensores.posC+2]   = sensores.terreno[6];
+			mapaResultado[sensores.posF+1][sensores.posC+2] = sensores.terreno[7];
+			mapaResultado[sensores.posF+2][sensores.posC+2] = sensores.terreno[8];
+
+			mapaResultado[sensores.posF-3][sensores.posC+3] = sensores.terreno[9];
+			mapaResultado[sensores.posF-2][sensores.posC+3] = sensores.terreno[10];
+			mapaResultado[sensores.posF-1][sensores.posC+3] = sensores.terreno[11];
+			mapaResultado[sensores.posF][sensores.posC+3]   = sensores.terreno[12];
+			mapaResultado[sensores.posF+1][sensores.posC+3] = sensores.terreno[13];
+			mapaResultado[sensores.posF+2][sensores.posC+3] = sensores.terreno[14];
+			mapaResultado[sensores.posF+3][sensores.posC+3] = sensores.terreno[15];
+		break;
+
+		case Orientacion::oeste:
+			mapaResultado[sensores.posF-1][sensores.posC-1] = sensores.terreno[1];
+			mapaResultado[sensores.posF][sensores.posC-1]   = sensores.terreno[2];
+			mapaResultado[sensores.posF+1][sensores.posC-1] = sensores.terreno[3];
+
+			mapaResultado[sensores.posF-2][sensores.posC-2] = sensores.terreno[4];
+			mapaResultado[sensores.posF-1][sensores.posC-2] = sensores.terreno[5];
+			mapaResultado[sensores.posF][sensores.posC-2]   = sensores.terreno[6];
+			mapaResultado[sensores.posF+1][sensores.posC-2] = sensores.terreno[7];
+			mapaResultado[sensores.posF+2][sensores.posC-2] = sensores.terreno[8];
+
+			mapaResultado[sensores.posF-3][sensores.posC-3] = sensores.terreno[9];
+			mapaResultado[sensores.posF-2][sensores.posC-3] = sensores.terreno[10];
+			mapaResultado[sensores.posF-1][sensores.posC-3] = sensores.terreno[11];
+			mapaResultado[sensores.posF][sensores.posC-3]   = sensores.terreno[12];
+			mapaResultado[sensores.posF+1][sensores.posC-3] = sensores.terreno[13];
+			mapaResultado[sensores.posF+2][sensores.posC-3] = sensores.terreno[14];
+			mapaResultado[sensores.posF+3][sensores.posC-3] = sensores.terreno[15];
+		break;
+	}
+}
 
 // Sacar por la términal la secuencia del plan obtenido
 void ComportamientoJugador::PintaPlan(list<Action> plan) {
@@ -423,8 +650,6 @@ void ComportamientoJugador::PintaPlan(list<Action> plan) {
 	cout << endl;
 }
 
-
-
 void AnularMatriz(vector<vector<unsigned char> > &m){
 	for (int i=0; i<m[0].size(); i++){
 		for (int j=0; j<m.size(); j++){
@@ -432,7 +657,6 @@ void AnularMatriz(vector<vector<unsigned char> > &m){
 		}
 	}
 }
-
 
 // Pinta sobre el mapa del juego el plan obtenido
 void ComportamientoJugador::VisualizaPlan(const estado &st, const list<Action> &plan){
@@ -459,8 +683,6 @@ void ComportamientoJugador::VisualizaPlan(const estado &st, const list<Action> &
 		it++;
 	}
 }
-
-
 
 int ComportamientoJugador::interact(Action accion, int valor){
   return false;
