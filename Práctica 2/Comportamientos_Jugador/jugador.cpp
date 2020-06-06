@@ -433,6 +433,7 @@ bool ComportamientoJugador::pathFinding_CostoUniforme(const estado &origen, cons
 		plan = current.secuencia;
 		cout << "Longitud del plan: " << plan.size() << endl;
 		PintaPlan(plan);
+		cout << "Coste del plan: " << current.costog << endl;
 		// ver el plan en el mapa
 		VisualizaPlan(origen, plan);
 		return true;
